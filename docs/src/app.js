@@ -10,7 +10,7 @@ async function main() {
     if (!res.ok) throw new Error(`Could not load plan.md (HTTP ${res.status}).`);
     const text = await res.text();
     const { config, milestones, pto } = parsePlan(text);
-    const scheduled = schedule(milestones);
+    const scheduled = schedule(milestones, pto);
     renderTimeline(document.getElementById('chart'), scheduled, config, pto);
     renderDepGraph(document.getElementById('dag'), milestones);
   } catch (e) {

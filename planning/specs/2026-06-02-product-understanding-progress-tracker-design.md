@@ -97,20 +97,21 @@ The repo ships a seeded `plan.md` containing all 9 real milestones: real Linear 
 
 ## Scheduler (`schedule.js`) — the cascade
 
-Pure function over **calendar days**. Declared dates are the baseline; dependencies push dependents right but never pull them earlier.
+Pure function over **working days** (weekends and the owner's PTO are skipped). Each task needs `requiredWork` working days of effort — its `days` estimate, or the working-day span of its declared dates when `days` is absent. Declared dates are the baseline; dependencies push dependents right but never pull them earlier.
 
 ```
-duration(m)        = end(m) - start(m)                      // preserved when shifted
-effectiveStart(m)  = max( declaredStart(m), max over d in deps(m) of effectiveEnd(d) )
-effectiveEnd(m)    = effectiveStart(m) + duration(m)
+requiredWork(m)    = days(m)  ?? workingDaysBetween(declaredStart(m), declaredEnd(m))
+effectiveStart(m)  = nextWorkable( max( declaredStart(m), max over d in deps(m) of effectiveEnd(d) ), owner(m) )
+effectiveEnd(m)    = the requiredWork-th workable day on/after effectiveStart  // skips weekends + owner PTO
 ```
 
-Computed by topological order over the dependency DAG (forward pass). Consequences:
-- Author extends one milestone's `end` (it "exceeds the time allotted") → every downstream dependent slides right by the overrun, each keeping its own length; nothing dependent ever starts before its prerequisite ends.
+`workable(day, owner)` = the day is Mon–Fri **and** not in that owner's PTO. Computed by topological order over the dependency DAG (forward pass). Consequences:
+- A PTO day (or weekend) inside a task's window pushes its end out by that many working days — the task still gets its full `requiredWork` of actual work.
+- Author extends a milestone → every downstream dependent slides right; nothing dependent ever starts before its prerequisite ends.
 - A milestone whose declared start is already later than all its dependencies' ends stays put (no left-pull).
 - Cross-person dependencies are respected (a Meredith milestone can wait on a Sunah milestone).
 
-The timeline renders **effective** dates; `plan.md` keeps the author's declared baseline.
+The timeline renders **effective** dates; `plan.md` keeps the author's declared baseline. PTO data flows in from the `## pto:` section.
 
 ## View 1 — Timeline (`timeline.js`)
 
