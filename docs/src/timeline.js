@@ -6,7 +6,7 @@ const MS = 86400000;
 const OWNERS = ['Sunah', 'Meredith'];
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const ORIGIN_X = 210, MONTH_H = 34, WEEK_H = 30, HEAD_H = MONTH_H + WEEK_H;
-const SUBROW_H = 70, BAR_H = 32, GUT = (SUBROW_H - BAR_H) / 2, BAR_GAP = 8;
+const SUBROW_H = 70, BAR_H = 32, GUT = (SUBROW_H - BAR_H) / 2, BAR_GAP = 4;
 const BLUE = '#2f80ed';
 const MONTH = ['JAN', 'FEB', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 
