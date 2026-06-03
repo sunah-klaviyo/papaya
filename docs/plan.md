@@ -54,7 +54,7 @@ view-start: 2026-05-04
 - start: 2026-07-06
 - days: 5
 - end: 2026-07-10
-- depends-on: backfill, indexing
+- depends-on: backfill, indexing, evals
 
 ## pto: PTO
 - Meredith: 2026-05-08
