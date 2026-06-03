@@ -1,0 +1,33 @@
+* { box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; background: #f5f7fb; color: #23272f; }
+.wrap { padding: 26px 32px 50px; }
+h1 { font-size: 26px; margin: 0 0 6px; }
+.sub { color: #6b7280; font-size: 15px; margin: 0 0 22px; }
+h2 { font-size: 17px; margin: 0 0 14px; color: #374151; }
+.card { background: #fff; border: 1px solid #e3e8f0; border-radius: 14px; padding: 22px; box-shadow: 0 1px 3px rgba(16,24,40,.05); margin-bottom: 26px; }
+.scroll { overflow-x: auto; }
+.error { background: #fdecea; border: 1px solid #f5c2bd; color: #9b1c14; border-radius: 10px; padding: 12px 16px; margin-bottom: 22px; font-size: 14px; white-space: pre-wrap; }
+.legend { display: flex; gap: 26px; align-items: center; font-size: 14px; color: #4b5563; margin: 18px 2px 0; flex-wrap: wrap; }
+.legend .sw { display: inline-block; width: 18px; height: 12px; border-radius: 3px; margin-right: 7px; vertical-align: middle; }
+.legend .today-sw { width: 3px; height: 16px; border-radius: 1px; background: #e0533d; }
+
+/* timeline */
+#chart { position: relative; }
+.lane-bg { position: absolute; left: 0; }
+.mhead { position: absolute; top: 0; text-align: center; font-size: 14px; font-weight: 700; letter-spacing: .04em; color: #5b6472; background: #eef2f8; border-left: 1px solid #ccd4e0; }
+.whead { position: absolute; text-align: center; font-size: 11px; color: #8a93a3; border-left: 1px solid #e7ecf3; }
+.grid { position: absolute; width: 1px; background: #eef2f7; }
+.mgrid { position: absolute; width: 1px; background: #ccd4e0; }
+.lane-sep { position: absolute; height: 1px; background: #dde3ec; left: 0; }
+.lane-lbl { position: absolute; left: 16px; font-weight: 700; font-size: 16px; color: #374151; }
+.lane-cap { position: absolute; left: 16px; font-size: 12px; color: #9aa3b2; }
+.bar { position: absolute; border-radius: 7px; color: #fff; font-size: 14px; font-weight: 500; display: flex; align-items: center; padding: 0 10px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; box-shadow: 0 1px 2px rgba(0,0,0,.18); z-index: 3; }
+.bar.clipped { border-top-left-radius: 0; border-bottom-left-radius: 0; border-left: 3px solid #1c5fb8; }
+.today-line { position: absolute; width: 2px; background: #e0533d; z-index: 5; }
+.pto-day { position: absolute; z-index: 4; background: rgba(71, 85, 105, 0.30); border-left: 1px dashed #8a93a3; border-right: 1px dashed #8a93a3; }
+
+/* dependency graph */
+#dag { position: relative; }
+.node { position: absolute; background: #eaf2fe; border: 1.6px solid #2f80ed; border-radius: 9px; padding: 7px 11px; z-index: 2; box-shadow: 0 1px 2px rgba(16,24,40,.06); }
+.node .nm { font-size: 13px; font-weight: 600; color: #173a5e; line-height: 1.2; }
+.node .ow { font-size: 11px; color: #6b7280; margin-top: 2px; }

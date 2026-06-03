@@ -1,0 +1,111 @@
+// test/parse.test.js
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { parsePlan } from '../docs/src/parse.js';
+
+const SAMPLE = `---
+view-start: 2026-05-01
+---
+
+## align: Disambiguate high-level requirements
+- owner: Sunah
+- start: 2026-03-16
+- end: 2026-04-10
+- depends-on:
+
+## tech-spec: Tech spec
+- owner: Sunah
+- start: 2026-04-10
+- end: 2026-05-22
+- depends-on: align
+
+## backfill: Catalogs Backfill
+- owner: Meredith
+- start: 2026-06-17
+- end: 2026-07-05
+- depends-on: tech-spec, align
+`;
+
+test('reads view-start from front matter', () => {
+  const { config } = parsePlan(SAMPLE);
+  assert.equal(config.viewStart, '2026-05-01');
+});
+
+test('parses every milestone with its fields', () => {
+  const { milestones } = parsePlan(SAMPLE);
+  assert.equal(milestones.length, 3);
+  const tech = milestones.find(m => m.id === 'tech-spec');
+  assert.deepEqual(tech, {
+    id: 'tech-spec', name: 'Tech spec', owner: 'Sunah',
+    start: '2026-04-10', end: '2026-05-22', days: null, deps: ['align'],
+  });
+});
+
+test('parses the optional days estimate as a number', () => {
+  const { milestones } = parsePlan('## a: A\n- owner: Sunah\n- start: 2026-05-04\n- days: 7\n- end: 2026-05-12\n- depends-on:\n');
+  assert.equal(milestones[0].days, 7);
+});
+
+test('parses a pto section into person/date entries', () => {
+  const text = `## a: A\n- owner: Sunah\n- start: 2026-05-04\n- end: 2026-05-08\n- depends-on:\n\n## pto: PTO\n- Meredith: 2026-05-08\n- Sunah: 2026-06-09, 2026-06-10\n`;
+  const { milestones, pto } = parsePlan(text);
+  assert.equal(milestones.length, 1); // pto section is not a milestone
+  assert.deepEqual(pto, [
+    { person: 'Meredith', date: '2026-05-08' },
+    { person: 'Sunah', date: '2026-06-09' },
+    { person: 'Sunah', date: '2026-06-10' },
+  ]);
+});
+
+test('rejects a malformed pto date', () => {
+  const text = `## a: A\n- owner: Sunah\n- start: 2026-05-04\n- end: 2026-05-08\n- depends-on:\n\n## pto: PTO\n- Sunah: someday\n`;
+  assert.throws(() => parsePlan(text), /PTO entry for "Sunah" has invalid date/);
+});
+
+test('empty depends-on yields no deps; multiple are split and trimmed', () => {
+  const { milestones } = parsePlan(SAMPLE);
+  assert.deepEqual(milestones.find(m => m.id === 'align').deps, []);
+  assert.deepEqual(milestones.find(m => m.id === 'backfill').deps, ['tech-spec', 'align']);
+});
+
+test('viewStart defaults to null when no front matter', () => {
+  const { config } = parsePlan('## a: A\n- owner: Sunah\n- start: 2026-01-01\n- end: 2026-01-02\n- depends-on:\n');
+  assert.equal(config.viewStart, null);
+});
+
+const milestone = (id, deps = [], start = '2026-01-01', end = '2026-01-02') =>
+  `## ${id}: ${id}\n- owner: Sunah\n- start: ${start}\n- end: ${end}\n- depends-on: ${deps.join(', ')}\n`;
+
+test('rejects unknown depends-on id', () => {
+  const text = milestone('a', ['ghost']);
+  assert.throws(() => parsePlan(text), /unknown id "ghost"/);
+});
+
+test('rejects duplicate ids', () => {
+  const text = milestone('a') + '\n' + milestone('a');
+  assert.throws(() => parsePlan(text), /Duplicate milestone id: "a"/);
+});
+
+test('rejects end before start', () => {
+  const text = milestone('a', [], '2026-02-01', '2026-01-01');
+  assert.throws(() => parsePlan(text), /ends before it starts/);
+});
+
+test('rejects a dependency cycle', () => {
+  const text = milestone('a', ['b']) + '\n' + milestone('b', ['a']);
+  assert.throws(() => parsePlan(text), /cycle detected/);
+});
+
+test('rejects malformed dates', () => {
+  const text = milestone('a', [], 'soon', '2026-01-02');
+  assert.throws(() => parsePlan(text), /invalid start date/);
+});
+
+test('parses files with CRLF line endings', () => {
+  const crlf = '---\r\nview-start: 2026-05-01\r\n---\r\n\r\n## a: Alpha\r\n- owner: Sunah\r\n- start: 2026-05-01\r\n- end: 2026-05-05\r\n- depends-on:\r\n';
+  const { config, milestones } = parsePlan(crlf);
+  assert.equal(config.viewStart, '2026-05-01');
+  assert.equal(milestones.length, 1);
+  assert.equal(milestones[0].name, 'Alpha');
+  assert.equal(milestones[0].end, '2026-05-05');
+});
