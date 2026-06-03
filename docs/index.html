@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Improving Product Understanding — progress</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="wrap">
+    <h1>Improving Product Understanding — progress</h1>
+    <p class="sub">May onward · two views: a timeline, and a milestone-dependency diagram.</p>
+
+    <div id="error" class="error" style="display:none"></div>
+
+    <div class="card">
+      <h2>Timeline</h2>
+      <div class="scroll"><div id="chart"></div></div>
+      <div class="legend">
+        <span><span class="sw" style="background:#2f80ed"></span>Milestone</span>
+        <span><span class="sw today-sw"></span>Today</span>
+        <span>Rows = people · bars = milestones they own · month + week axis</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Milestone dependencies</h2>
+      <div class="scroll"><div id="dag"></div></div>
+      <div class="legend">
+        <span>Arrows: prerequisite → dependent (flows left to right by dependency depth)</span>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="src/app.js"></script>
+</body>
+</html>
