@@ -51,9 +51,9 @@ view-start: 2026-05-04
 
 ## rollout: Rollout
 - owner: Sunah
-- start: 2026-07-06
+- start: 2026-06-22
 - days: 5
-- end: 2026-07-10
+- end: 2026-06-26
 - depends-on: backfill, indexing, evals
 
 ## pto: PTO
