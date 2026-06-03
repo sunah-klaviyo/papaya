@@ -17,7 +17,7 @@ const mondayOnOrAfter = day => day + ((8 - dow(day)) % 7);      // 0 if already 
 const startOfMonthDay = day => { const d = new Date(day * MS); return Math.round(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1) / MS); };
 const nextMonthDay = day => { const d = new Date(day * MS), y = d.getUTCFullYear(), mo = d.getUTCMonth(); return Math.round(Date.UTC(mo === 11 ? y + 1 : y, (mo + 1) % 12, 1) / MS); };
 
-export function renderTimeline(container, scheduled, config) {
+export function renderTimeline(container, scheduled, config, pto = []) {
   container.innerHTML = '';
   if (!scheduled.length) return;
 
@@ -103,8 +103,16 @@ export function renderTimeline(container, scheduled, config) {
     const left = Math.max(x(m.startDay), ORIGIN_X);
     const w = Math.max(ORIGIN_X + rightIndex(m.endDay) * PPWD - left, 8);
     const clipped = workIndex(m.startDay) < 0 ? ' clipped' : '';
-    const days = workSpanInclusive(m.startDay, m.endDay);
+    const days = m.days != null ? m.days : workSpanInclusive(m.startDay, m.endDay);
     add(`<div class="bar${clipped}" style="left:${left}px;top:${barY(m)}px;width:${w}px;height:${BAR_H}px;background:${BLUE}" title="${esc(m.name)} (${fromEpochDay(m.startDay)} → ${fromEpochDay(m.endDay)})">${esc(m.name)} (${days}d)</div>`);
+  }
+
+  // PTO — gray a one-working-day slice (1/5 of a week block) in the person's lane per day off
+  for (const { person, date } of pto) {
+    if (!(person in laneTop)) continue;
+    const idx = workIndex(toEpochDay(date));
+    if (idx < 0 || idx >= totalWork) continue;
+    add(`<div class="pto-day" style="left:${ORIGIN_X + idx * PPWD}px;width:${PPWD}px;top:${laneTop[person]}px;height:${laneRows[person] * SUBROW_H}px" title="${esc(person)} PTO ${date}"></div>`);
   }
 
   // today line

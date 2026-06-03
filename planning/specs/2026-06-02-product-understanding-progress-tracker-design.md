@@ -119,6 +119,7 @@ The timeline renders **effective** dates; `plan.md` keeps the author's declared 
 - **Rows = people** (`Sunah`, `Meredith`), each a labeled lane with a faint zebra background. **Bars = milestones owned by that person**, positioned and sized in working days (a bar covers through its end day, so its width equals its **business-day length**). All one blue. Each bar's label is the milestone name followed by that business-day length in parentheses, e.g. `Build product datastore (5d)` — which matches the optional `days` field in `plan.md` when the dates were derived from it.
 - **Overlap handling:** within a lane, bars are packed onto **sub-rows** by greedy interval assignment so overlapping milestones never visually collide (e.g. Ingestion + Integration).
 - **Today:** a red vertical line at the current date (real `new Date()` by default). No text label.
+- **PTO:** an optional `## pto:` section in `plan.md` lists each person's days off (`- Meredith: 2026-05-08`). Each PTO day grays out a one-working-day slice (1/5 of a week block) in that person's lane. PTO is purely visual — it does not reschedule tasks.
 - **No dependency arrows here.**
 
 ## View 2 — Dependency diagram (`depgraph.js`)
