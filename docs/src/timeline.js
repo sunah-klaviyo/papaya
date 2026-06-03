@@ -6,7 +6,7 @@ const MS = 86400000;
 const OWNERS = ['Sunah', 'Meredith'];
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const ORIGIN_X = 210, MONTH_H = 34, WEEK_H = 30, HEAD_H = MONTH_H + WEEK_H;
-const SUBROW_H = 70, BAR_H = 32, GUT = (SUBROW_H - BAR_H) / 2;
+const SUBROW_H = 70, BAR_H = 32, GUT = (SUBROW_H - BAR_H) / 2, BAR_GAP = 4;
 const BLUE = '#2f80ed';
 const MONTH = ['JAN', 'FEB', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 
@@ -101,7 +101,7 @@ export function renderTimeline(container, scheduled, config, pto = []) {
   // bars (positioned and sized in working days; label is the business-day length)
   for (const m of vis) {
     const left = Math.max(x(m.startDay), ORIGIN_X);
-    const w = Math.max(ORIGIN_X + rightIndex(m.endDay) * PPWD - left, 8);
+    const w = Math.max(ORIGIN_X + rightIndex(m.endDay) * PPWD - left - BAR_GAP, 8);
     const clipped = workIndex(m.startDay) < 0 ? ' clipped' : '';
     const days = m.days != null ? m.days : workSpanInclusive(m.startDay, m.endDay);
     add(`<div class="bar${clipped}" style="left:${left}px;top:${barY(m)}px;width:${w}px;height:${BAR_H}px;background:${BLUE}" title="${esc(m.name)} (${fromEpochDay(m.startDay)} → ${fromEpochDay(m.endDay)})">${esc(m.name)} (${days}d)</div>`);
