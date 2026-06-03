@@ -37,8 +37,29 @@ test('parses every milestone with its fields', () => {
   const tech = milestones.find(m => m.id === 'tech-spec');
   assert.deepEqual(tech, {
     id: 'tech-spec', name: 'Tech spec', owner: 'Sunah',
-    start: '2026-04-10', end: '2026-05-22', deps: ['align'],
+    start: '2026-04-10', end: '2026-05-22', days: null, deps: ['align'],
   });
+});
+
+test('parses the optional days estimate as a number', () => {
+  const { milestones } = parsePlan('## a: A\n- owner: Sunah\n- start: 2026-05-04\n- days: 7\n- end: 2026-05-12\n- depends-on:\n');
+  assert.equal(milestones[0].days, 7);
+});
+
+test('parses a pto section into person/date entries', () => {
+  const text = `## a: A\n- owner: Sunah\n- start: 2026-05-04\n- end: 2026-05-08\n- depends-on:\n\n## pto: PTO\n- Meredith: 2026-05-08\n- Sunah: 2026-06-09, 2026-06-10\n`;
+  const { milestones, pto } = parsePlan(text);
+  assert.equal(milestones.length, 1); // pto section is not a milestone
+  assert.deepEqual(pto, [
+    { person: 'Meredith', date: '2026-05-08' },
+    { person: 'Sunah', date: '2026-06-09' },
+    { person: 'Sunah', date: '2026-06-10' },
+  ]);
+});
+
+test('rejects a malformed pto date', () => {
+  const text = `## a: A\n- owner: Sunah\n- start: 2026-05-04\n- end: 2026-05-08\n- depends-on:\n\n## pto: PTO\n- Sunah: someday\n`;
+  assert.throws(() => parsePlan(text), /PTO entry for "Sunah" has invalid date/);
 });
 
 test('empty depends-on yields no deps; multiple are split and trimmed', () => {
