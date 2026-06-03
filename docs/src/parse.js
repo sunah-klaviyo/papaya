@@ -1,5 +1,6 @@
 // docs/src/parse.js
 export function parsePlan(text) {
+  text = text.replace(/\r\n/g, '\n'); // normalise Windows CRLF (e.g. from GitHub web editor)
   const config = { viewStart: null };
   let body = text;
 

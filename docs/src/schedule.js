@@ -9,7 +9,7 @@ export function schedule(milestones) {
   const memo = {};
 
   const compute = id => {
-    if (memo[id]) return memo[id];
+    if (id in memo) return memo[id];
     const m = byId[id];
     const declStart = toEpochDay(m.start);
     const duration = toEpochDay(m.end) - declStart;

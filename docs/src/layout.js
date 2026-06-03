@@ -8,8 +8,8 @@ export function packSubRows(items) {
   const row = {};
   for (const m of sorted) {
     let r = rowEnd.findIndex(end => end <= m.startDay);
-    if (r === -1) { r = rowEnd.length; rowEnd.push(0); }
-    rowEnd[r] = m.endDay;
+    if (r === -1) { r = rowEnd.length; rowEnd.push(m.endDay); }
+    else { rowEnd[r] = m.endDay; }
     row[m.id] = r;
   }
   return { row, rowCount: rowEnd.length };

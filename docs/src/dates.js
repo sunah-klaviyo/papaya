@@ -3,7 +3,7 @@ const MS = 86400000;
 
 export function toEpochDay(iso) {
   const [y, m, d] = iso.split('-').map(Number);
-  return Math.round(Date.UTC(y, m - 1, d) / MS);
+  return Math.floor(Date.UTC(y, m - 1, d) / MS);
 }
 
 export function fromEpochDay(day) {

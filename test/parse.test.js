@@ -79,3 +79,12 @@ test('rejects malformed dates', () => {
   const text = milestone('a', [], 'soon', '2026-01-02');
   assert.throws(() => parsePlan(text), /invalid start date/);
 });
+
+test('parses files with CRLF line endings', () => {
+  const crlf = '---\r\nview-start: 2026-05-01\r\n---\r\n\r\n## a: Alpha\r\n- owner: Sunah\r\n- start: 2026-05-01\r\n- end: 2026-05-05\r\n- depends-on:\r\n';
+  const { config, milestones } = parsePlan(crlf);
+  assert.equal(config.viewStart, '2026-05-01');
+  assert.equal(milestones.length, 1);
+  assert.equal(milestones[0].name, 'Alpha');
+  assert.equal(milestones[0].end, '2026-05-05');
+});
