@@ -51,3 +51,31 @@ test('viewStart defaults to null when no front matter', () => {
   const { config } = parsePlan('## a: A\n- owner: Sunah\n- start: 2026-01-01\n- end: 2026-01-02\n- depends-on:\n');
   assert.equal(config.viewStart, null);
 });
+
+const milestone = (id, deps = [], start = '2026-01-01', end = '2026-01-02') =>
+  `## ${id}: ${id}\n- owner: Sunah\n- start: ${start}\n- end: ${end}\n- depends-on: ${deps.join(', ')}\n`;
+
+test('rejects unknown depends-on id', () => {
+  const text = milestone('a', ['ghost']);
+  assert.throws(() => parsePlan(text), /unknown id "ghost"/);
+});
+
+test('rejects duplicate ids', () => {
+  const text = milestone('a') + '\n' + milestone('a');
+  assert.throws(() => parsePlan(text), /Duplicate milestone id: "a"/);
+});
+
+test('rejects end before start', () => {
+  const text = milestone('a', [], '2026-02-01', '2026-01-01');
+  assert.throws(() => parsePlan(text), /ends before it starts/);
+});
+
+test('rejects a dependency cycle', () => {
+  const text = milestone('a', ['b']) + '\n' + milestone('b', ['a']);
+  assert.throws(() => parsePlan(text), /cycle detected/);
+});
+
+test('rejects malformed dates', () => {
+  const text = milestone('a', [], 'soon', '2026-01-02');
+  assert.throws(() => parsePlan(text), /invalid start date/);
+});
