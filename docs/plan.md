@@ -31,15 +31,15 @@ view-start: 2026-05-04
 ## ingestion: Spin up infrastructure and build Catalogs ingestion pipeline
 - owner: Meredith
 - start: 2026-05-22
-- days: 7
-- end: 2026-06-01
+- days: 12
+- end: 2026-06-08
 - depends-on: tech-spec
 
 ## backfill: Design, build, and run Catalogs backfill
 - owner: Meredith
-- start: 2026-06-03
+- start: 2026-06-09
 - days: 10
-- end: 2026-06-16
+- end: 2026-06-22
 - depends-on: ingestion, datastore
 
 ## indexing: Build storage solution and enable indexing
