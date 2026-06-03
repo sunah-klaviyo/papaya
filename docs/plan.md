@@ -16,9 +16,9 @@ view-start: 2026-05-04
 
 ## datastore: Build product datastore
 - owner: Sunah
-- start: 2026-05-28
+- start: 2026-05-27
 - days: 5
-- end: 2026-06-03
+- end: 2026-06-02
 - depends-on: tech-spec
 
 ## evals: Evals
@@ -46,7 +46,7 @@ view-start: 2026-05-04
 - owner: Sunah
 - start: 2026-06-03
 - days: 7
-- end: 2026-06-11
+- end: 2026-06-12
 - depends-on: datastore
 
 ## rollout: Rollout
