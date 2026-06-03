@@ -2,7 +2,23 @@
 body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; background: #f5f7fb; color: #23272f; }
 .wrap { padding: 26px 32px 50px; }
 h1 { font-size: 26px; margin: 0 0 6px; }
-.sub { color: #6b7280; font-size: 15px; margin: 0 0 22px; }
+.sub { color: #6b7280; font-size: 15px; margin: 0; }
+.linear-btn {
+  display: inline-block;
+  margin: 18px 0;
+  padding: 9px 18px;
+  background: linear-gradient(180deg, #6b76e0 0%, #5460c8 100%);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid #454fb0;
+  border-radius: 8px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.30), inset 0 -2px 0 rgba(0,0,0,.18), 0 2px 5px rgba(16,24,40,.22);
+  transition: transform .05s ease, box-shadow .15s ease, background .15s ease;
+}
+.linear-btn:hover { background: linear-gradient(180deg, #5e6ad2 0%, #4b57bf 100%); }
+.linear-btn:active { transform: translateY(1px); box-shadow: inset 0 1px 3px rgba(0,0,0,.30), 0 1px 2px rgba(16,24,40,.18); }
 h2 { font-size: 17px; margin: 0 0 14px; color: #374151; }
 .card { background: #fff; border: 1px solid #e3e8f0; border-radius: 14px; padding: 22px; box-shadow: 0 1px 3px rgba(16,24,40,.05); margin-bottom: 26px; }
 .scroll { overflow-x: auto; }
@@ -21,8 +37,9 @@ h2 { font-size: 17px; margin: 0 0 14px; color: #374151; }
 .lane-sep { position: absolute; height: 1px; background: #dde3ec; left: 0; }
 .lane-lbl { position: absolute; left: 16px; font-weight: 700; font-size: 16px; color: #374151; }
 .lane-cap { position: absolute; left: 16px; font-size: 12px; color: #9aa3b2; }
-.bar { position: absolute; border-radius: 7px; color: #fff; font-size: 14px; font-weight: 500; display: flex; align-items: center; padding: 0 10px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; box-shadow: 0 1px 2px rgba(0,0,0,.18); z-index: 3; }
+.bar { position: absolute; border-radius: 7px; border: 1px solid rgba(13,42,92,.35); color: #fff; font-size: 14px; font-weight: 500; display: flex; align-items: center; padding: 0 10px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; box-shadow: 0 1px 2px rgba(0,0,0,.18); z-index: 3; }
 .bar.clipped { border-top-left-radius: 0; border-bottom-left-radius: 0; border-left: 3px solid #1c5fb8; }
+.bar:hover { width: max-content !important; max-width: none; overflow: visible; z-index: 10; box-shadow: 0 3px 10px rgba(16,24,40,.30); }
 .today-line { position: absolute; width: 2px; background: #e0533d; z-index: 5; }
 .pto-day { position: absolute; z-index: 4; background: rgba(71, 85, 105, 0.30); border-left: 1px dashed #8a93a3; border-right: 1px dashed #8a93a3; }
 
