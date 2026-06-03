@@ -2,10 +2,12 @@
 import { computeLayers } from './layout.js';
 
 const NS = 'http://www.w3.org/2000/svg';
+const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const NODE_W = 172, NODE_H = 52, COL_W = 218, ROW_H = 84, PAD_X = 28, PAD_TOP = 24;
 
 export function renderDepGraph(container, milestones) {
   container.innerHTML = '';
+  if (!milestones.length) return;
   const layer = computeLayers(milestones);
 
   const cols = {};
@@ -36,7 +38,6 @@ export function renderDepGraph(container, milestones) {
   svg.innerHTML = '<defs><marker id="dah" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6.5,3 L0,6 Z" fill="#64748b"/></marker></defs>';
   container.appendChild(svg);
 
-  const byId = Object.fromEntries(milestones.map(m => [m.id, m]));
   for (const m of milestones) {
     for (const pid of m.deps) {
       const a = pos[pid], b = pos[m.id];
@@ -55,6 +56,6 @@ export function renderDepGraph(container, milestones) {
     const p = pos[m.id];
     container.insertAdjacentHTML('beforeend',
       `<div class="node" style="left:${p.left}px;top:${p.top}px;width:${NODE_W}px;min-height:${NODE_H}px">
-         <div class="nm">${m.name}</div><div class="ow">${m.owner}</div></div>`);
+         <div class="nm">${esc(m.name)}</div><div class="ow">${esc(m.owner)}</div></div>`);
   }
 }

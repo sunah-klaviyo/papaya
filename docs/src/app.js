@@ -15,8 +15,7 @@ async function main() {
     renderDepGraph(document.getElementById('dag'), milestones);
   } catch (e) {
     const el = document.getElementById('error');
-    el.textContent = e.message;
-    el.style.display = 'block';
+    if (el) { el.textContent = e.message; el.style.display = 'block'; }
     console.error(e);
   }
 }

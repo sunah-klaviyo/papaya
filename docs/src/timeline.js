@@ -4,6 +4,7 @@ import { packSubRows } from './layout.js';
 
 const MS = 86400000;
 const OWNERS = ['Sunah', 'Meredith'];
+const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const ORIGIN_X = 210, MONTH_H = 34, WEEK_H = 30, HEAD_H = MONTH_H + WEEK_H;
 const SUBROW_H = 70, BAR_H = 32, GUT = (SUBROW_H - BAR_H) / 2;
 const BLUE = '#2f80ed';
@@ -11,6 +12,7 @@ const MONTH = ['JAN', 'FEB', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUG', 'SE
 
 export function renderTimeline(container, scheduled, config) {
   container.innerHTML = '';
+  if (!scheduled.length) return;
 
   const viewStartDay = config.viewStart
     ? toEpochDay(config.viewStart)
@@ -79,7 +81,7 @@ export function renderTimeline(container, scheduled, config) {
     const w = Math.max(x(m.endDay) - left, 8);
     const clipped = x(m.startDay) < ORIGIN_X ? ' clipped' : '';
     const days = m.endDay - m.startDay; // duration estimate in calendar days (preserved by the cascade)
-    add(`<div class="bar${clipped}" style="left:${left}px;top:${barY(m)}px;width:${w}px;height:${BAR_H}px;background:${BLUE}" title="${m.name} (${fromEpochDay(m.startDay)} → ${fromEpochDay(m.endDay)})">${m.name} (${days}d)</div>`);
+    add(`<div class="bar${clipped}" style="left:${left}px;top:${barY(m)}px;width:${w}px;height:${BAR_H}px;background:${BLUE}" title="${esc(m.name)} (${fromEpochDay(m.startDay)} → ${fromEpochDay(m.endDay)})">${esc(m.name)} (${days}d)</div>`);
   }
 
   // today line
