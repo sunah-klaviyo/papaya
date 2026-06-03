@@ -866,7 +866,8 @@ export function renderTimeline(container, scheduled, config) {
     const left = Math.max(x(m.startDay), ORIGIN_X);
     const w = Math.max(x(m.endDay) - left, 8);
     const clipped = x(m.startDay) < ORIGIN_X ? ' clipped' : '';
-    add(`<div class="bar${clipped}" style="left:${left}px;top:${barY(m)}px;width:${w}px;height:${BAR_H}px;background:${BLUE}" title="${m.name} (${fromEpochDay(m.startDay)} → ${fromEpochDay(m.endDay)})">${m.name}</div>`);
+    const days = m.endDay - m.startDay; // duration estimate in calendar days (preserved by the cascade)
+    add(`<div class="bar${clipped}" style="left:${left}px;top:${barY(m)}px;width:${w}px;height:${BAR_H}px;background:${BLUE}" title="${m.name} (${fromEpochDay(m.startDay)} → ${fromEpochDay(m.endDay)})">${m.name} (${days}d)</div>`);
   }
 
   // today line
@@ -1012,7 +1013,7 @@ Then open `http://localhost:8000/` in a browser. (Fetch requires HTTP — openin
 - [ ] **Step 3: Verify the rendered page**
 
 Confirm visually:
-1. **Timeline** shows two lanes (Sunah, Meredith) with blue milestone bars on a month + week axis starting at May.
+1. **Timeline** shows two lanes (Sunah, Meredith) with blue milestone bars on a month + week axis starting at May. Each bar label ends with its duration in parentheses, e.g. `Tech spec (42d)`.
 2. *Tech spec* is **clipped** at the left edge (flat corner + accent stripe) because it started before May; *High-level requirements* (ends 4/10) is **absent** from the timeline.
 3. Meredith's lane shows **two sub-rows** where *Catalogs Ingestion* and *Catalogs Integration* overlap.
 4. A red **today line** appears at today's date (if today is within the May→July window).

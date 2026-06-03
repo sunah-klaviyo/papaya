@@ -116,7 +116,7 @@ The timeline renders **effective** dates; `plan.md` keeps the author's declared 
 
 - **Axis (dual, one component):** a month band on top; below it, 7-day week columns labeled by start date. Vertical gridlines at week and month boundaries.
 - **Window:** x-axis runs from `config.view-start` to the latest effective end (+ small padding). Milestones ending before the window are omitted; milestones starting before it are **clipped** at the left edge and marked (flat left corner + accent stripe) to signal "started earlier."
-- **Rows = people** (`Sunah`, `Meredith`), each a labeled lane with a faint zebra background. **Bars = milestones owned by that person**, positioned by effective start/end, all one blue.
+- **Rows = people** (`Sunah`, `Meredith`), each a labeled lane with a faint zebra background. **Bars = milestones owned by that person**, positioned by effective start/end, all one blue. Each bar's label is the milestone name followed by its duration estimate in parentheses, e.g. `Tech spec (42d)` (days = `endDay − startDay`, the estimate the cascade preserves).
 - **Overlap handling:** within a lane, bars are packed onto **sub-rows** by greedy interval assignment so overlapping milestones never visually collide (e.g. Ingestion + Integration).
 - **Today:** a red vertical line at the current date (real `new Date()` by default). No text label.
 - **No dependency arrows here.**
