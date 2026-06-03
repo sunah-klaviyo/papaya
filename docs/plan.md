@@ -26,7 +26,7 @@ view-start: 2026-05-04
 - start: 2026-06-25
 - days: 3
 - end: 2026-06-29
-- depends-on: tech-spec
+- depends-on: tool-call
 
 ## backfill: Design, build, and run Catalogs backfill
 - owner: Meredith
@@ -61,7 +61,7 @@ view-start: 2026-05-04
 - start: 2026-06-30
 - days: 5
 - end: 2026-07-06
-- depends-on: ingestion, indexing, evals, tool-call
+- depends-on: ingestion, indexing, evals
 
 ## pto: PTO
 - Meredith: 2026-05-08
