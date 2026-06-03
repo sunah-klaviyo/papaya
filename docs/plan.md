@@ -23,9 +23,9 @@ view-start: 2026-05-04
 
 ## evals: Evals
 - owner: Sunah
-- start: 2026-05-22
+- start: 2026-06-15
 - days: 3
-- end: 2026-05-26
+- end: 2026-06-17
 - depends-on: tech-spec
 
 ## ingestion: Spin up infrastructure and build Catalogs ingestion pipeline
